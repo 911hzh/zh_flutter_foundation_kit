@@ -1,0 +1,44 @@
+name: CI
+
+# 在代码推送到主分支或开发分支时触发 CI。
+on:
+  push:
+    branches:
+      - main
+      - develop
+  # 在创建或更新 Pull Request 时触发 CI。
+  pull_request:
+
+jobs:
+  flutter:
+    name: Analyze and Test
+    # 使用 GitHub 托管的 Ubuntu 环境运行 Flutter 检查。
+    runs-on: ubuntu-latest
+
+    steps:
+      # 拉取仓库代码，让后续步骤可以访问当前提交的文件。
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 安装 Flutter stable，并启用缓存以加快后续 CI 执行速度。
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      # 输出 Flutter 版本，方便在 CI 日志中排查环境问题。
+      - name: Show Flutter version
+        run: flutter --version
+
+      # 安装根目录 pubspec.yaml 中声明的依赖。
+      - name: Install root dependencies
+        run: flutter pub get
+
+      # 执行静态分析，当前只检查根包的 lib 和 test 目录。
+      - name: Analyze package
+        run: make analyze
+
+      # 执行根包测试用例。
+      - name: Run tests
+        run: make test
