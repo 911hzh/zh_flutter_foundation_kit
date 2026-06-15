@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_foundation_kit/cutil/Lazyload.dart';
-
 abstract class NetworkProxy {
   String? proxyIp;
   NetworkProxy({required this.proxyIp}) {
@@ -41,10 +39,8 @@ abstract class NetworkProxy {
     return null;
   }
 
-  @override
   Stream<String?> get proxyChanged => _proxyChanged.stream;
 
-  @override
   void setProxy(String? proxy) {
     if (proxy == proxyIp) {
       return;
