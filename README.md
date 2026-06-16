@@ -64,6 +64,32 @@
 - `MetaError` / `LocalizedError`：通用错误协议和错误模型。
 - `BuildContextExtension`、`ListExtention`、`Generator`：常用扩展和辅助工具。
 
+## 使用 example 生成新项目
+
+可以把 `example` 当成 Flutter app 模板使用：
+
+```bash
+make create helloworldProject
+```
+
+命令会在当前仓库上一级生成 `../helloworldProject`，并把 Dart package name 转为 `helloworld_project`，默认 app id 转为 `com.example.helloworldproject`。
+
+也可以按需指定 app id 和输出父目录：
+
+```bash
+make create helloworldProject BUNDLE_ID=com.company.helloworld OUTPUT=../apps
+```
+
+不传 `BUNDLE_ID` 时默认使用 `com.example.<project>`，不传 `OUTPUT` 时默认输出到当前仓库上一级目录。
+
+生成后的项目默认使用 pub 版本依赖：
+
+```yaml
+flutter_foundation_kit: ^0.0.2
+```
+
+如果当前版本尚未发布到你的 pub 源，生成项目后的 `flutter pub get` 会因为依赖不可解析失败。此时需要先发布基础库，或后续扩展脚手架支持 git/path 依赖。
+
 ## 快速使用
 
 ### 1. 添加依赖

@@ -59,6 +59,39 @@
 
 ## 功能列表
 
+## 2026-06-16 example 模板生成命令
+
+### 功能说明
+
+新增 `make create <ProjectName>` 脚手架入口，可以基于 `example` 生成独立 Flutter app 项目。生成过程会复制模板、规范化 Dart package name、替换 app id，并把 `flutter_foundation_kit` 改为 pub 版本依赖；命令支持可选 `BUNDLE_ID` 和 `OUTPUT` 参数。
+
+### 涉及目录
+
+- `Makefile`：新增 `create` 命令入口。
+- `tool/create_example_project.py`：模板生成脚本。
+- `tool/test_create_example_project.py`：脚本单元测试。
+- `README.md`：补充模板生成使用说明。
+
+### 页面入口或调用入口
+
+- command: `make create helloworldProject`
+- command with options: `make create helloworldProject BUNDLE_ID=com.company.helloworld OUTPUT=../apps`
+- output: `../helloworldProject`
+
+### 依赖注册
+
+本次未新增或调整 GetIt / injectable 注册。
+
+### 验证方式
+
+- 运行 `python3 -m unittest tool/test_create_example_project.py`。
+- 运行 `make create helloworldProject`。
+- 搜索生成项目，确认没有 `package:example/`、`path: ../` 和 `com.example.example` 残留。
+
+### 备注
+
+生成项目默认使用 `flutter_foundation_kit: ^0.0.2`。如果该版本尚未发布到当前 pub 源，生成后的 `flutter pub get` 会因依赖不可解析失败。
+
 ## 2026-06-15 示例目录归位与文档同步
 
 ### 功能说明
