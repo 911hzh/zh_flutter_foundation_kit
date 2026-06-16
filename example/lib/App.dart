@@ -1,5 +1,5 @@
-import 'package:example/route/GlobalNavigatorKey.dart';
-import 'package:example/route/RouteConfig.dart';
+import 'package:example/module/route/GlobalNavigatorKey.dart';
+import 'package:example/module/route/RouteConfig.dart';
 import 'package:flutter/material.dart';
 
 class App extends StatelessWidget {

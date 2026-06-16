@@ -1,16 +1,16 @@
 # 快速上手
 
-这份文档给第一次使用该模板的开发者阅读。目标是让你在 `git clone` 项目后，能快速判断：新页面、新 SDK、新接口、新 Store、新公共组件应该放在哪个目录。
+这份文档给第一次使用该模板的开发者阅读。模板可以通过根目录的 `make create <ProjectName>` 生成独立 Flutter app，也可以直接阅读 `example` 工程了解推荐结构。目标是让你快速判断：新页面、新 SDK、新接口、新 Store、新公共组件应该放在哪个目录。
 
 ## 先记住一句话
 
-页面和业务放 `module`，接口抽象放 `base/port`，具体实现放 `infra`，依赖注册放 `getIt`，路由放 `route`，公共 UI 放 `uikit`。
+页面和业务放 `module/usecase`，接口抽象放 `base/port`，具体实现放 `infra`，依赖注册放 `module/getIt`，路由放 `module/route`，公共 UI 放 `e_uikit`。
 
 ## 目录速查
 
 ### 我要新增一个页面
 
-放到 `lib/module`。
+放到 `lib/module/usecase`。
 
 适合放：
 
@@ -22,12 +22,12 @@
 示例：
 
 ```text
-lib/module/demos/pages/pay/
+lib/module/usecase/pages/pay/
   PayDemoPage.dart
   PayDemoCubit.dart
 ```
 
-如果页面需要被打开，还要同步修改 `lib/route/RouteConfig.dart`。
+如果页面需要被打开，还要同步修改 `lib/module/route/RouteConfig.dart`。
 
 ### 我要接入第三方 SDK
 
@@ -49,7 +49,7 @@ lib/infra/analytics/
 
 ### 我要注册依赖
 
-放到 `lib/getIt`。
+放到 `lib/module/getIt`。
 
 适合放：
 
@@ -62,9 +62,9 @@ lib/infra/analytics/
 常见文件：
 
 ```text
-lib/getIt/Injection.dart
-lib/getIt/RegisterModule.dart
-lib/getIt/GetItInstanceName.dart
+lib/module/getIt/Injection.dart
+lib/module/getIt/RegisterModule.dart
+lib/module/getIt/GetItInstanceName.dart
 ```
 
 模块里需要使用某个能力时，优先通过 `getIt` 获取接口，而不是直接创建实现类。
@@ -110,7 +110,7 @@ lib/base/store/settings/SettingsStore.dart
 
 ### 我要新增路由
 
-放到 `lib/route`。
+放到 `lib/module/route`。
 
 适合放：
 
@@ -118,11 +118,11 @@ lib/base/store/settings/SettingsStore.dart
 - 页面构建入口
 - 全局导航 key
 
-新增页面后，通常需要在 `lib/route/RouteConfig.dart` 添加路由。
+新增页面后，通常需要在 `lib/module/route/RouteConfig.dart` 添加路由。
 
 ### 我要新增公共 UI 组件
 
-放到 `lib/uikit`。
+放到 `lib/e_uikit`。
 
 适合放：
 
@@ -133,18 +133,18 @@ lib/base/store/settings/SettingsStore.dart
 - 加载状态组件
 - 多个页面都会复用的 Widget
 
-不要把业务流程、SDK 调用、接口请求放到 `uikit`。
+不要把业务流程、SDK 调用、接口请求放到 `e_uikit`。
 
 ## 新功能放置判断
 
 如果你不知道代码应该放哪里，可以按下面顺序判断：
 
-1. 是页面、页面状态或页面交互吗？放 `module`。
+1. 是页面、页面状态或页面交互吗？放 `module/usecase`。
 2. 是第三方 SDK 的业务接口吗？放 `base/port`。
 3. 是第三方 SDK 的具体实现吗？放 `infra`。
-4. 是依赖注入和对象注册吗？放 `getIt`。
-5. 是页面路径和导航入口吗？放 `route`。
-6. 是多个页面复用的 UI 吗？放 `uikit`。
+4. 是依赖注入和对象注册吗？放 `module/getIt`。
+5. 是页面路径和导航入口吗？放 `module/route`。
+6. 是多个页面复用的 UI 吗？放 `e_uikit`。
 7. 是网络 API 调用吗？放 `base/api`。
 8. 是共享状态或本地持久化吗？放 `base/store`。
 
@@ -152,21 +152,21 @@ lib/base/store/settings/SettingsStore.dart
 
 ### 新增一个普通页面
 
-1. 在 `lib/module` 下创建页面目录。
+1. 在 `lib/module/usecase` 下创建页面目录。
 2. 创建 `Page` 和需要的 `Cubit`。
-3. 在 `lib/route/RouteConfig.dart` 注册路由。
+3. 在 `lib/module/route/RouteConfig.dart` 注册路由。
 4. 如果首页需要入口，把入口加入首页列表。
 
 ### 新增一个第三方 SDK 能力
 
 1. 在 `lib/base/port` 定义接口。
 2. 在 `lib/infra` 实现接口。
-3. 在 `lib/getIt` 注册接口和实现。
+3. 在 `lib/module/getIt` 注册接口和实现。
 4. 在 `lib/module` 中通过接口使用能力。
 
 ### 新增一个公共 UI
 
-1. 在 `lib/uikit` 创建组件。
+1. 在 `lib/e_uikit` 创建组件。
 2. 保持组件无业务依赖。
 3. 在需要的 `module` 页面中复用。
 
@@ -181,14 +181,14 @@ lib/base/port/pay/
 lib/infra/pay/
   PayPortImpl.dart
 
-lib/module/demos/pages/pay/
+lib/module/usecase/pages/pay/
   PayDemoPage.dart
   PayDemoCubit.dart
 
-lib/getIt/
+lib/module/getIt/
   RegisterModule.dart
 
-lib/route/
+lib/module/route/
   RouteConfig.dart
 ```
 
@@ -207,7 +207,7 @@ PayDemoPage / PayDemoCubit
 
 - 不要把第三方 SDK 调用直接写进 `Page`。
 - 不要把第三方 SDK 的具体实现写进 `base/port`。
-- 不要把业务逻辑写进 `uikit`。
+- 不要把业务逻辑写进 `e_uikit`。
 - 不要新增页面后忘记注册路由。
 - 不要在模块里到处手动 `new` 依赖对象，优先通过 `getIt` 管理。
 
@@ -216,12 +216,12 @@ PayDemoPage / PayDemoCubit
 你可以把这个模板理解成：
 
 ```text
-module 负责使用能力
+module/usecase 负责使用能力
 base/port 负责定义能力
 infra 负责实现能力
-getIt 负责组装能力
-route 负责打开页面
-uikit 负责复用 UI
+module/getIt 负责组装能力
+module/route 负责打开页面
+e_uikit 负责复用 UI
 ```
 
 只要遵守这个方向，项目变大后目录仍然会比较清晰。

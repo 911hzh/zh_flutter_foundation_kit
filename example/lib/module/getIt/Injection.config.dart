@@ -17,7 +17,7 @@ import 'package:example/base/store/auth/AuthStoreImpl.dart' as _i798;
 import 'package:example/base/store/settings/Settings.dart' as _i1025;
 import 'package:example/base/store/settings/SettingsStore.dart' as _i213;
 import 'package:example/base/store/user/UserStoreImpl.dart' as _i154;
-import 'package:example/getIt/RegisterModule.dart' as _i953;
+import 'package:example/module/getIt/RegisterModule.dart' as _i352;
 import 'package:flutter_foundation_kit/flutter_foundation_kit.dart' as _i698;
 import 'package:flutter_foundation_kit/wcore/Repository.dart' as _i38;
 import 'package:flutter_foundation_kit/wcore/settings/SettingsLoader.dart'
@@ -48,14 +48,12 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i213.SettingsStore>(
       () => _i213.SettingsStore(settingsLoader: gh<_i248.SettingsLoader>()),
     );
-    gh.lazySingleton<_i798.AuthStoreImpl>(
-      () => _i798.AuthStoreImpl(
-        keychainPort: gh<_i38.Repository>(instanceName: 'authRepository'),
-      ),
-    );
     gh.lazySingleton<_i698.RestClientAdapter>(
       () =>
           _i1032.AppRestClientAdapter(settingsStore: gh<_i213.SettingsStore>()),
+    );
+    gh.lazySingleton<_i798.AuthStoreImpl>(
+      () => _i798.AuthStoreImpl(keychainPort: gh<_i38.Repository>()),
     );
     gh.lazySingleton<_i698.RestClient>(
       () => registerModule.restClient(
@@ -73,13 +71,11 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i154.UserStoreImpl(
         apiClient: gh<_i225.AppApiClient>(),
         authStore: gh<_i798.AuthStoreImpl>(),
-        preferenceRepositoryPort: gh<_i38.Repository>(
-          instanceName: 'userPreferenceRepository',
-        ),
+        preferenceRepositoryPort: gh<_i38.Repository>(),
       ),
     );
     return this;
   }
 }
 
-class _$RegisterModule extends _i953.RegisterModule {}
+class _$RegisterModule extends _i352.RegisterModule {}
