@@ -12,18 +12,18 @@
 
 ## 核心目录
 
-- `lib/module`：页面、Cubit、VM、模块内 Widget。
+- `lib/module/usecase`：页面、Cubit、VM、模块内 Widget。
+- `lib/module/getIt`：依赖注入和对象注册。
+- `lib/module/route`：路由表和全局导航能力。
 - `lib/base/port`：第三方 SDK 或平台能力的接口抽象。
 - `lib/infra`：`base/port` 中接口的具体实现。
-- `lib/getIt`：依赖注入和对象注册。
-- `lib/route`：路由表和全局导航能力。
-- `lib/uikit`：多个模块共享的 UI 组件。
+- `lib/e_uikit`：多个模块共享的 UI 组件。
 - `lib/base/api`：示例网络 API 封装。
 - `lib/base/store`：共享状态、本地持久化和 Store 示例。
 
 ## 最小规则
 
-页面和业务放 `module`，接口抽象放 `base/port`，具体实现放 `infra`，依赖注册放 `getIt`，路由放 `route`，公共 UI 放 `uikit`。
+页面和业务放 `module/usecase`，接口抽象放 `base/port`，具体实现放 `infra`，依赖注册放 `module/getIt`，路由放 `module/route`，公共 UI 放 `e_uikit`。
 
 ## 适合的使用方式
 

@@ -26,12 +26,12 @@
 
 ### 涉及目录
 
-- `lib/module/...`：页面、Cubit、VM 或模块内 Widget。
+- `lib/module/usecase/...`：页面、Cubit、VM 或模块内 Widget。
 - `lib/base/port/...`：接口抽象。
 - `lib/infra/...`：接口实现。
-- `lib/getIt/...`：依赖注册。
-- `lib/route/...`：路由注册。
-- `lib/uikit/...`：公共 UI。
+- `lib/module/getIt/...`：依赖注册。
+- `lib/module/route/...`：路由注册。
+- `lib/e_uikit/...`：公共 UI。
 
 ### 页面入口或调用入口
 
@@ -59,6 +59,36 @@
 
 ## 功能列表
 
+## 2026-06-15 示例目录归位与文档同步
+
+### 功能说明
+
+将 example 中依赖注册、路由和公共 UI 的说明同步到当前目录结构：依赖注册位于 `lib/module/getIt`，路由位于 `lib/module/route`，公共 UI 位于 `lib/e_uikit`。同时更新 AI 开发规则、快速上手和 lib 目录总览，避免继续引用已删除的旧顶层目录。
+
+### 涉及目录
+
+- `lib/module/getIt/...`：依赖注册。
+- `lib/module/route/...`：路由注册。
+- `lib/e_uikit/...`：公共 UI。
+- `AI_DEV.md`、`lib/quick_use.md`、`lib/README.md`：目录规则和使用指引。
+
+### 页面入口或调用入口
+
+- route config: `lib/module/route/RouteConfig.dart`
+- injection: `lib/module/getIt/Injection.dart`
+
+### 依赖注册
+
+本次未新增依赖注册，仅同步文档中的注册目录说明。
+
+### 验证方式
+
+- 搜索文档中的旧目录引用，确认活跃使用说明已指向当前目录结构。
+
+### 备注
+
+`example/docs/superpowers` 下的历史设计和计划记录保留原始上下文，不作为当前目录规则来源。
+
 ## 2026-06-12 网络配置拆分与 baseUrl 配置化
 
 ### 功能说明
@@ -76,7 +106,7 @@
 - `lib/base/store/settings/SettingsStore.dart`：提供默认 baseUrl 初始值。
 - `lib/base/store/settings/development.json`：配置 demo baseUrl。
 - `lib/base/store/settings/release.json`：配置 demo baseUrl。
-- `lib/getIt/Injection.config.dart`：由 build_runner 重新生成依赖注册。
+- `lib/module/getIt/Injection.config.dart`：由 build_runner 重新生成依赖注册。
 - `AI_DEV.md`：补充一个文件一个主要 class、RestClientAdapter 和 NetworkProxy 拆分规则。
 
 ### 页面入口或调用入口
@@ -87,7 +117,7 @@
 
 ### 依赖注册
 
-已通过 `dart run build_runner build --delete-conflicting-outputs` 重新生成 `lib/getIt/Injection.config.dart`。`AppRestClientAdapter` 现在注册为 `RestClientAdapter`，并注入 `SettingsStore`。
+已通过 `dart run build_runner build --delete-conflicting-outputs` 重新生成 `lib/module/getIt/Injection.config.dart`。`AppRestClientAdapter` 现在注册为 `RestClientAdapter`，并注入 `SettingsStore`。
 
 ### 验证方式
 

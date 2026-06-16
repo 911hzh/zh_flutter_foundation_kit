@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/io.dart';
-import 'package:example/getIt/GetItInstanceName.dart';
+import 'package:example/module/getIt/GetItInstanceName.dart';
 import 'package:flutter_foundation_kit/flutter_foundation_kit.dart';
 import 'package:flutter_foundation_kit/infra/KeyChainImpl.dart';
 import 'package:flutter_foundation_kit/infra/PreferenceRepositoryImpl.dart';

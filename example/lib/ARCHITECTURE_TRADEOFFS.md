@@ -1,38 +1,42 @@
 # 分层结构优缺点
 
-本文档用于补充说明 `lib` 当前分层结构的取舍。当前结构把业务模块、接口抽象、基础设施实现、依赖注册、路由和公共 UI 分开，核心目录包括 `module`、`base/port`、`infra`、`getIt`、`route`、`uikit`。
+本文档用于补充说明 `lib` 当前分层结构的取舍。当前结构把业务模块、接口抽象、基础设施实现、依赖注册、路由和公共 UI 分开，核心目录包括 `module/usecase`、`base/port`、`infra`、`module/getIt`、`module/route`、`e_uikit`。
 
 ## 当前层次结构
 
 ```mermaid
 flowchart TD
     Module[module\n业务与 demo 模块]
+    Usecase[module/usecase\n页面和状态编排]
     Port[base/port\n接口抽象]
     Infra[infra\n接口实现]
-    GetIt[getIt\n依赖注册]
-    Route[route\n路由入口]
-    UIKit[uikit\n公共 UI]
+    GetIt[module/getIt\n依赖注册]
+    Route[module/route\n路由入口]
+    UIKit[e_uikit\n公共 UI]
     BaseApi[base/api\n网络 API 示例]
     Store[base/store\n状态与持久化]
 
-    Route --> Module
-    Module --> UIKit
-    Module --> Port
-    Module --> BaseApi
-    Module --> Store
+    Module --> Usecase
+    Module --> GetIt
+    Module --> Route
+    Route --> Usecase
+    Usecase --> UIKit
+    Usecase --> Port
+    Usecase --> BaseApi
+    Usecase --> Store
     Infra --> Port
     GetIt --> Infra
     GetIt --> Port
     GetIt --> BaseApi
     GetIt --> Store
-    Module --> GetIt
+    Usecase --> GetIt
 ```
 
 ## 优点
 
 ### 1. 业务模块不直接绑定第三方 SDK
 
-`module` 通过 `base/port` 使用能力，具体 SDK 接入细节放在 `infra`。例如 analytics、feedback、pay 这类能力可以先定义业务需要的接口，再由 `infra` 对接不同 SDK。
+`module/usecase` 通过 `base/port` 使用能力，具体 SDK 接入细节放在 `infra`。例如 analytics、feedback、pay 这类能力可以先定义业务需要的接口，再由 `infra` 对接不同 SDK。
 
 这样做的好处是第三方 SDK 替换、初始化方式变化、平台差异处理都不会大面积影响页面和业务模块。
 
@@ -40,12 +44,12 @@ flowchart TD
 
 每一层都有明确关注点：
 
-- `module` 关注页面、交互和业务状态编排。
+- `module/usecase` 关注页面、交互和业务状态编排。
 - `base/port` 关注能力抽象。
 - `infra` 关注具体实现。
-- `getIt` 关注依赖注册和装配。
-- `route` 关注页面入口。
-- `uikit` 关注可复用 UI。
+- `module/getIt` 关注依赖注册和装配。
+- `module/route` 关注页面入口。
+- `e_uikit` 关注可复用 UI。
 
 新功能接入时，可以更快判断代码应该放在哪里，减少页面、SDK、注册逻辑混在一起的问题。
 
@@ -61,7 +65,7 @@ flowchart TD
 
 ### 5. 依赖装配集中
 
-`getIt` 集中处理对象注册，模块层不用关心具体实现类怎么创建。初始化参数、环境差异、命名实例等装配逻辑可以集中维护。
+`module/getIt` 集中处理对象注册，模块层不用关心具体实现类怎么创建。初始化参数、环境差异、命名实例等装配逻辑可以集中维护。
 
 ## 缺点
 
@@ -75,7 +79,7 @@ Port 如果过早抽象、命名不清晰或接口过细，会让调用方很难
 
 ### 3. 依赖注册出错不容易在编译期暴露
 
-使用 `getIt` 后，部分依赖缺失、命名实例错误、注册顺序错误可能在运行时才暴露。新增依赖时需要同步维护注册代码和生成代码。
+使用 `module/getIt` 后，部分依赖缺失、命名实例错误、注册顺序错误可能在运行时才暴露。新增依赖时需要同步维护注册代码和生成代码。
 
 ### 4. 需要团队遵守依赖方向
 
@@ -101,7 +105,7 @@ Port 如果过早抽象、命名不清晰或接口过细，会让调用方很难
 
 - 先从业务语义定义 Port，例如 `trackEvent`、`openFeedback`、`startPayment`，不要直接复制 SDK 的接口形状。
 - Infra 实现可以依赖第三方 SDK，但不要让 SDK 类型泄漏到模块层。
-- GetIt 注册应靠近实现变更同步维护，避免新增实现后忘记注册。
-- Module 只负责使用能力，不负责初始化 SDK。
-- UIKit 只放通用 UI，不放业务流程和第三方 SDK 调用。
+- `module/getIt` 注册应靠近实现变更同步维护，避免新增实现后忘记注册。
+- `module/usecase` 只负责使用能力，不负责初始化 SDK。
+- `e_uikit` 只放通用 UI，不放业务流程和第三方 SDK 调用。
 - 当某个目录文件过多时，按能力继续拆分子目录，例如 `infra/analytics`、`infra/pay`、`base/port/pay`。

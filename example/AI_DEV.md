@@ -9,22 +9,22 @@
 核心思想：
 
 ```text
-module 负责使用能力
+module 负责使用能力、注册依赖和打开页面
 base/port 负责定义能力
 infra 负责实现能力
-getIt 负责组装能力
-route 负责打开页面
-uikit 负责复用 UI
+module/getIt 负责组装能力
+module/route 负责打开页面
+e_uikit 负责复用 UI
 ```
 
 ## 目录放置规则
 
-- 页面、Cubit、VM、模块内 Widget 放 `lib/module`。
+- 页面、Cubit、VM、模块内 Widget 放 `lib/module/usecase`。
 - 第三方 SDK 或平台能力的接口抽象放 `lib/base/port`。
 - `base/port` 中接口的具体实现放 `lib/infra`。
-- 依赖注入、对象注册、命名实例放 `lib/getIt`。
-- 路由表、页面路径、全局导航能力放 `lib/route`。
-- 多个模块共享的 UI 组件放 `lib/uikit`。
+- 依赖注入、对象注册、命名实例放 `lib/module/getIt`。
+- 路由表、页面路径、全局导航能力放 `lib/module/route`。
+- 多个模块共享的 UI 组件放 `lib/e_uikit`。
 - REST API、请求方法、网络返回模型放 `lib/base/api`。
 - Store、本地持久化、共享状态放 `lib/base/store`。
 - 尽量保持一个文件只定义一个主要 class，避免多个可注入类或模型类混在同一个文件。
@@ -35,27 +35,27 @@ uikit 负责复用 UI
 
 - 不要把第三方 SDK 调用直接写进 Page、Cubit 或 VM。
 - 不要把第三方 SDK 的具体实现写进 `lib/base/port`。
-- 不要把业务流程、接口请求或 SDK 调用写进 `lib/uikit`。
-- 不要新增页面后忘记在 `lib/route/RouteConfig.dart` 注册路由。
+- 不要把业务流程、接口请求或 SDK 调用写进 `lib/e_uikit`。
+- 不要新增页面后忘记在 `lib/module/route/RouteConfig.dart` 注册路由。
 - 不要绕过 GetIt 到处手动创建可注入依赖。
 - 不要把模块页面散落到 `lib` 根目录。
-- 不要把仅服务某个页面的小 Widget 放进 `uikit`。
+- 不要把仅服务某个页面的小 Widget 放进 `e_uikit`。
 - 不要把 `RestClientAdapter`、`NetworkProxy`、API 聚合类、响应模型都堆在同一个文件。
 
 ## 常见任务
 
 ### 新增页面
 
-1. 在 `lib/module` 下创建页面目录。
+1. 在 `lib/module/usecase` 下创建页面目录。
 2. 创建 `Page`。
 3. 如果有状态或交互逻辑，创建对应 `Cubit` 或 VM。
-4. 在 `lib/route/RouteConfig.dart` 注册路由。
+4. 在 `lib/module/route/RouteConfig.dart` 注册路由。
 5. 如果首页需要入口，同步更新首页入口列表。
 
 推荐结构：
 
 ```text
-lib/module/demos/pages/example/
+lib/module/usecase/pages/example/
   ExamplePage.dart
   ExampleCubit.dart
 ```
@@ -64,7 +64,7 @@ lib/module/demos/pages/example/
 
 1. 在 `lib/base/port` 定义业务接口。
 2. 在 `lib/infra` 实现该接口。
-3. 在 `lib/getIt` 注册接口和实现。
+3. 在 `lib/module/getIt` 注册接口和实现。
 4. 在 `lib/module` 中通过接口使用能力。
 
 推荐结构：
@@ -82,7 +82,7 @@ lib/infra/analytics/
 1. 在 `lib/base/api` 新增 API 类。
 2. 网络返回模型放到 `lib/base/api/model`。
 3. `RestClientAdapter` 和 `NetworkProxy` 的实现分别创建独立文件。
-4. 需要注入时，在 `lib/getIt` 或 injectable 注解中注册。
+4. 需要注入时，在 `lib/module/getIt` 或 injectable 注解中注册。
 
 推荐结构：
 
@@ -109,14 +109,14 @@ lib/base/store/order/
 
 ### 新增公共 UI
 
-1. 在 `lib/uikit` 创建组件。
+1. 在 `lib/e_uikit` 创建组件。
 2. 组件保持可复用，不绑定具体业务流程。
 3. 业务数据转换和交互逻辑留在 `module`。
 
 推荐结构：
 
 ```text
-lib/uikit/loading/
+lib/e_uikit/loading/
   LoadingView.dart
 ```
 
@@ -131,12 +131,12 @@ lib/uikit/loading/
 
 然后判断任务类型：
 
-- 页面功能：改 `lib/module`，必要时改 `lib/route`。
-- 第三方 SDK：先改 `lib/base/port`，再改 `lib/infra`，最后改 `lib/getIt`。
+- 页面功能：改 `lib/module/usecase`，必要时改 `lib/module/route`。
+- 第三方 SDK：先改 `lib/base/port`，再改 `lib/infra`，最后改 `lib/module/getIt`。
 - 网络请求：改 `lib/base/api`。
 - 本地状态：改 `lib/base/store`。
-- 公共 UI：改 `lib/uikit`。
-- 依赖注册：改 `lib/getIt`。
+- 公共 UI：改 `lib/e_uikit`。
+- 依赖注册：改 `lib/module/getIt`。
 
 ## AI 修改后检查
 

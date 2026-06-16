@@ -1,5 +1,5 @@
 import 'package:example/base/store/user/UserStoreImpl.dart';
-import 'package:example/getIt/Injection.dart';
+import 'package:example/module/getIt/Injection.dart';
 import 'package:example/module/usecase/pages/userStore/UserStoreDemoCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
