@@ -24,7 +24,7 @@ Usually these files are enough to understand the package purpose, public API, an
 - default infrastructure adapters
 - common utilities
 
-It is not a complete app template. Do not move application pages, routes, feature modules, business models, or app-specific DI setup into package core.
+The package core is not a complete app template. Keep application pages, routes, feature modules, business models, and app-specific DI setup out of `lib`. The repository does provide `example` plus `make create <ProjectName>` as an app template scaffold.
 
 ## Public API Rule
 
@@ -46,7 +46,7 @@ Avoid adding new public APIs that require host apps to deep import from internal
 - `lib/infra`: default infrastructure implementations backed by plugins.
 - `lib/cutil`: generic utilities and extensions.
 - `lib/port`: legacy compatibility entrypoint. Do not add new files here.
-- `example`: usage demo and host-app composition. Do not treat it as package core.
+- `example`: usage demo, host-app composition, and source template for `make create`. Do not treat it as package core.
 
 ## Change Guidelines
 

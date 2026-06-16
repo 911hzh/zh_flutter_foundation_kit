@@ -1,6 +1,6 @@
 # Flutter Foundation Kit 架构
 
-`flutter_foundation_kit` 是一个面向 Flutter 项目的基础框架 package。它提供可复用的底层能力，不是完整应用模板。页面、路由、依赖注入方式、业务模型、功能流程等应用层内容，应保留在宿主 App 或 `example` 中。
+`flutter_foundation_kit` 是一个面向 Flutter 项目的基础框架 package。它提供可复用的底层能力，package core 本身不承载完整应用模板。页面、路由、依赖注入方式、业务模型、功能流程等应用层内容，应保留在宿主 App 或 `example` 中；仓库通过 `example` 和 `make create <ProjectName>` 提供可复制的应用模板。
 
 ## 架构目标
 
@@ -23,7 +23,7 @@ import 'package:flutter_foundation_kit/flutter_foundation_kit.dart';
 ## 分层概览
 
 ```text
-宿主 App / Example
+宿主 App / Example 模板
   - 页面、路由、功能模块、DI、具体业务 Store
   - 依赖 flutter_foundation_kit 公开 API
 
@@ -154,6 +154,6 @@ flutter_foundation_kit
 - 新增公开 API 时，同步导出到 `lib/flutter_foundation_kit.dart`。
 - 新增能力端口时，放到 `lib/cport`。
 - 第三方插件适配器放到 `lib/infra`。
-- 业务示例放在 `example`，不要放进 package core。
+- 业务示例和应用模板放在 `example`，不要放进 package core。
 - package 边界发生变化时，同步更新 `README.md`、`architecture.md` 和 `ai.md`。
 - 共享行为变化时补充或更新测试，尤其是工具、配置、持久化和网络转换逻辑。
