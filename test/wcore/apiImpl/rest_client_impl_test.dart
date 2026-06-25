@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter_foundation_kit/api/RestRequestError.dart';
 import 'package:flutter_foundation_kit/wcore/apiImpl/NetworkProxy.dart';
 import 'package:flutter_foundation_kit/wcore/apiImpl/RestClientAdapter.dart';
@@ -14,6 +18,29 @@ void main() {
       );
       expect(restClient.dio, isNotNull);
       expect(restClient.dio.options.baseUrl, "https://httpbingo.org");
+    });
+
+    test("path contains http or https, it will be used as is", () async {
+      final httpClientAdapter = CapturingHttpClientAdapter();
+      final restClient = RestClientImpl(
+        restAdapter: TestRestClientAdapter(),
+        networkProxy: TestNetworkProxy(proxyIp: null),
+        createHttpClientAdapter: (_) => httpClientAdapter,
+      );
+
+      final response = await restClient.get(
+        "https://api.example.test/get",
+        queryParameters: {"source": "absolute_url_test"},
+      );
+      final data = response.data as Map<String, dynamic>;
+
+      expect(response.statusCode, 200);
+      expect(
+        data["url"],
+        "https://api.example.test/get?source=absolute_url_test",
+      );
+      expect(data["host"], "api.example.test");
+      expect(httpClientAdapter.lastUri?.host, "api.example.test");
     });
 
     test("calls real api and merges adapter headers into request", () async {
@@ -102,5 +129,25 @@ class TestNetworkProxy extends NetworkProxy {
   @override
   String? findProxy() {
     return null;
+  }
+}
+
+class CapturingHttpClientAdapter extends IOHttpClientAdapter {
+  Uri? lastUri;
+
+  @override
+  Future<ResponseBody> fetch(
+    RequestOptions options,
+    Stream<Uint8List>? requestStream,
+    Future<void>? cancelFuture,
+  ) async {
+    lastUri = options.uri;
+    return ResponseBody.fromString(
+      jsonEncode({"url": options.uri.toString(), "host": options.uri.host}),
+      200,
+      headers: {
+        Headers.contentTypeHeader: [Headers.jsonContentType],
+      },
+    );
   }
 }

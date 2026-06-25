@@ -4,6 +4,7 @@ import 'package:example/module/getIt/Injection.dart';
 import 'package:example/module/usecase/pages/login/LoginCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -26,12 +27,16 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => LoginCubit(userApi: getIt<UserApi>(), authStore: getIt<AuthStoreImpl>()),
+      create: (_) => LoginCubit(
+        userApi: getIt<UserApi>(),
+        authStore: getIt<AuthStoreImpl>(),
+      ),
       child: BlocListener<LoginCubit, LoginState>(
-        listenWhen: (previous, current) => previous.isSuccess != current.isSuccess,
+        listenWhen: (previous, current) =>
+            previous.isSuccess != current.isSuccess,
         listener: (context, state) {
           if (state.isSuccess) {
-            Navigator.of(context).pushReplacementNamed('/home');
+            context.go('/home');
           }
         },
         child: Scaffold(
@@ -70,7 +75,12 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                   if (state.error != null) ...[
                     const SizedBox(height: 16),
-                    Text(state.error.toString(), style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                    Text(
+                      state.error.toString(),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
                   ],
                 ],
               );

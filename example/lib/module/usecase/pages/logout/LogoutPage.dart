@@ -1,9 +1,9 @@
 import 'package:example/base/store/auth/AuthStoreImpl.dart';
 import 'package:example/module/getIt/Injection.dart';
 import 'package:example/module/usecase/pages/logout/LogoutCubit.dart';
-import 'package:example/module/route/GlobalNavigatorKey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class LogoutPage extends StatelessWidget {
   const LogoutPage({super.key});
@@ -13,11 +13,11 @@ class LogoutPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => LogoutCubit(authStore: getIt<AuthStoreImpl>()),
       child: BlocListener<LogoutCubit, LogoutState>(
-        listenWhen: (previous, current) => previous.isSuccess != current.isSuccess,
+        listenWhen: (previous, current) =>
+            previous.isSuccess != current.isSuccess,
         listener: (context, state) {
           if (state.isSuccess) {
-            Navigator.of(context).popUntil(ModalRoute.withName('/home'));
-            context.pushReplacementNamed('/login');
+            context.go('/login');
           }
         },
         child: Scaffold(
@@ -30,7 +30,9 @@ class LogoutPage extends StatelessWidget {
                   const Text('点击按钮后会清空 AuthStore，并返回登录页。'),
                   const SizedBox(height: 16),
                   FilledButton.icon(
-                    onPressed: state.isLoading ? null : () => context.read<LogoutCubit>().logout(),
+                    onPressed: state.isLoading
+                        ? null
+                        : () => context.read<LogoutCubit>().logout(),
                     icon: const Icon(Icons.logout),
                     label: const Text('Logout'),
                   ),
@@ -40,7 +42,12 @@ class LogoutPage extends StatelessWidget {
                   ],
                   if (state.error != null) ...[
                     const SizedBox(height: 16),
-                    Text(state.error.toString(), style: TextStyle(color: Theme.of(context).colorScheme.error)),
+                    Text(
+                      state.error.toString(),
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                    ),
                   ],
                 ],
               );

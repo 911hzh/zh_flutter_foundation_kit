@@ -1,6 +1,6 @@
 import 'package:example/App.dart';
 import 'package:example/module/getIt/Injection.dart';
-import 'package:example/route/RouteConfig.dart';
+import 'package:example/module/route/RouteConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -20,8 +20,12 @@ void main() {
     expect(find.text('Login'), findsWidgets);
   });
 
-  testWidgets('shows module demo entries after login route', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(routes: RouteConfig.routes, initialRoute: '/home'));
+  testWidgets('shows module demo entries after login route', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(
+      MaterialApp.router(routerConfig: RouteConfig.getRouter('/home')),
+    );
 
     expect(find.text('Foundation Kit Demo'), findsOneWidget);
     expect(find.text('Logout Demo'), findsOneWidget);

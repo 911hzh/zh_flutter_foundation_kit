@@ -7,18 +7,41 @@ import 'package:example/module/usecase/pages/logger/LoggerPage.dart';
 import 'package:example/module/usecase/pages/settings/SettingsDemoPage.dart';
 import 'package:example/module/usecase/pages/store/StoreDemoPage.dart';
 import 'package:example/module/usecase/pages/userStore/UserStoreDemoPage.dart';
-import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class RouteConfig {
-  static Map<String, WidgetBuilder> routes = {
-    "/login": (context) => const LoginPage(),
-    "/logout": (context) => const LogoutPage(),
-    "/home": (context) => const HomePage(),
-    "/cutil": (context) => const CUtilPage(),
-    "/apiImpl": (context) => const ApiImplPage(),
-    "/logger": (context) => const LoggerPage(),
-    "/settings": (context) => const SettingsDemoPage(),
-    "/store": (context) => const StoreDemoPage(),
-    "/userStore": (context) => const UserStoreDemoPage(),
-  };
+  static GoRouter getRouter(String initialLocation) {
+    return GoRouter(
+      initialLocation: initialLocation,
+      routes: [
+        GoRoute(path: "/login", builder: (context, state) => const LoginPage()),
+        GoRoute(
+          path: "/logout",
+          builder: (context, state) => const LogoutPage(),
+        ),
+        GoRoute(path: "/home", builder: (context, state) => const HomePage()),
+        GoRoute(path: "/cutil", builder: (context, state) => const CUtilPage()),
+        GoRoute(
+          path: "/apiImpl",
+          builder: (context, state) => const ApiImplPage(),
+        ),
+        GoRoute(
+          path: "/logger",
+          builder: (context, state) => const LoggerPage(),
+        ),
+        GoRoute(
+          path: "/settings",
+          builder: (context, state) => const SettingsDemoPage(),
+        ),
+        GoRoute(
+          path: "/store",
+          builder: (context, state) => const StoreDemoPage(),
+        ),
+        GoRoute(
+          path: "/userStore",
+          builder: (context, state) => const UserStoreDemoPage(),
+        ),
+      ],
+    );
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:example/App.dart';
 import 'package:example/base/store/auth/AuthStoreImpl.dart';
-import 'package:example/getIt/Injection.dart';
+import 'package:example/module/getIt/Injection.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
