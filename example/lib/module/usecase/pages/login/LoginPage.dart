@@ -1,6 +1,6 @@
 import 'package:example/base/api/UserApi.dart';
 import 'package:example/base/store/auth/AuthStoreImpl.dart';
-import 'package:example/getIt/Injection.dart';
+import 'package:example/module/getIt/Injection.dart';
 import 'package:example/module/usecase/pages/login/LoginCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

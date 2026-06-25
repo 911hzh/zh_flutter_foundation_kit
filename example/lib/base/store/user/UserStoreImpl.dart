@@ -1,7 +1,7 @@
 import 'package:example/base/api/AppApiClient.dart';
 import 'package:example/base/api/model/User.dart';
 import 'package:example/base/store/auth/AuthStoreImpl.dart';
-import 'package:example/getIt/GetItInstanceName.dart';
+import 'package:example/module/getIt/GetItInstanceName.dart';
 import 'package:flutter_foundation_kit/cutil/Lazyload.dart';
 import 'package:flutter_foundation_kit/wcore/Repository.dart';
 import 'package:flutter_foundation_kit/wcore/store/UserStore.dart';

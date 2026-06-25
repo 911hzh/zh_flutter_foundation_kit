@@ -113,7 +113,7 @@ class CreateExampleProjectTests(unittest.TestCase):
         (target / "lib").mkdir()
         (target / "lib" / "main.dart").write_text(
             "import 'package:example/App.dart';\n"
-            "import 'package:example/getIt/Injection.dart';\n"
+            "import 'package:example/module/getIt/Injection.dart';\n"
             "import 'package:example/route/RouteConfig.dart';\n",
             encoding="utf-8",
         )

@@ -3,7 +3,7 @@ import 'package:example/base/api/UserApi.dart';
 import 'package:example/base/store/auth/AuthStoreImpl.dart';
 import 'package:example/base/store/settings/SettingsStore.dart';
 import 'package:example/base/store/user/UserStoreImpl.dart';
-import 'package:example/getIt/Injection.dart';
+import 'package:example/module/getIt/Injection.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -1,4 +1,4 @@
-import 'package:example/getIt/Injection.dart';
+import 'package:example/module/getIt/Injection.dart';
 import 'package:example/base/store/auth/AuthStoreImpl.dart';
 import 'package:example/base/store/settings/SettingsStore.dart';
 import 'package:example/module/usecase/pages/store/StoreDemoCubit.dart';
