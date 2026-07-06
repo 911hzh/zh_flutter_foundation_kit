@@ -1,5 +1,14 @@
 # 更新日志
 
+## 0.9.0
+
+- 整理基础库发布配置，新增根目录 analyzer/formatter 配置。
+- 扩展 CI 覆盖范围，增加生成器测试和 example 模板 analyze/test。
+- 清理 example 模板依赖，移除未使用的 `flutter_riverpod`。
+- 同步模板生成器默认依赖版本为 `flutter_foundation_kit: ^0.9.0`。
+- 补充 `AGENTS.md` 发布版本同步规则，降低版本号漂移风险。
+- 修正 logger formatter 废弃 API 使用，并清理 analyzer 细节。
+
 ## 0.0.4
 
 - 示例工程接入 `go_router`，统一登录、退出和功能页跳转方式。

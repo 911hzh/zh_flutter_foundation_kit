@@ -11,7 +11,10 @@ class StoreDemoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => StoreDemoCubit(settingsStore: getIt<SettingsStore>(), authStore: getIt<AuthStoreImpl>()),
+      create: (_) => StoreDemoCubit(
+        settingsStore: getIt<SettingsStore>(),
+        authStore: getIt<AuthStoreImpl>(),
+      ),
       child: Scaffold(
         appBar: AppBar(title: const Text('Store Demo')),
         body: BlocBuilder<StoreDemoCubit, StoreDemoState>(
@@ -22,12 +25,15 @@ class StoreDemoPage extends StatelessWidget {
                 const Text('点击 Start 后执行 SettingsStore 和 AuthStore 示例。'),
                 const SizedBox(height: 12),
                 FilledButton.icon(
-                  onPressed: state.isLoading ? null : () => context.read<StoreDemoCubit>().load(),
+                  onPressed: state.isLoading
+                      ? null
+                      : () => context.read<StoreDemoCubit>().load(),
                   icon: const Icon(Icons.play_arrow),
                   label: const Text('Start'),
                 ),
                 const SizedBox(height: 12),
-                if (state.isLoading) const Center(child: CircularProgressIndicator()),
+                if (state.isLoading)
+                  const Center(child: CircularProgressIndicator()),
                 if (state.error != null) Text(state.error.toString()),
                 if (!state.hasStarted) const Text('结果会在这里展示。'),
                 if (state.settings != null)

@@ -35,6 +35,10 @@ jobs:
       - name: Install root dependencies
         run: flutter pub get
 
+      # 检查代码格式；如果有文件需要格式化，CI 会失败。
+      - name: Check format
+        run: make format-check
+
       # 执行静态分析，当前只检查根包的 lib 和 test 目录。
       - name: Analyze package
         run: make analyze
@@ -42,3 +46,20 @@ jobs:
       # 执行根包测试用例。
       - name: Run tests
         run: make test
+
+      # 验证 example 项目生成脚本。
+      - name: Test project generator
+        run: python3 -m unittest tool/test_create_example_project.py
+
+      # 安装 example 模板依赖，验证模板自身仍可分析和测试。
+      - name: Install example dependencies
+        working-directory: example
+        run: flutter pub get
+
+      - name: Analyze example
+        working-directory: example
+        run: flutter analyze
+
+      - name: Test example
+        working-directory: example
+        run: flutter test

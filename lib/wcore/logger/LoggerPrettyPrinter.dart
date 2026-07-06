@@ -11,7 +11,7 @@ class LoggerPrettyPrinter extends logg.PrettyPrinter {
         lineLength: 120,
         colors: false,
         printEmojis: true,
-        printTime: true,
+        dateTimeFormat: logg.DateTimeFormat.onlyTimeAndSinceStart,
         excludeBox: const {},
         noBoxingByDefault: true,
         excludePaths: const [
@@ -25,7 +25,8 @@ class LoggerPrettyPrinter extends logg.PrettyPrinter {
   List<String> log(logg.LogEvent event) {
     var list = super.log(event);
     final timeIndex = list.indexWhere(_isTimeLine);
-    final source = timeIndex > 0 ? _wrapSource(_normalizeSource(list.first)) : "";
+    final source =
+        timeIndex > 0 ? _wrapSource(_normalizeSource(list.first)) : "";
     final time = timeIndex >= 0 ? list[timeIndex] : "";
     final messageLines = timeIndex >= 0 ? list.sublist(timeIndex + 1) : list;
 

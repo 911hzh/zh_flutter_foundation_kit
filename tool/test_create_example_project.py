@@ -143,7 +143,7 @@ class CreateExampleProjectTests(unittest.TestCase):
         pubspec = (target / "pubspec.yaml").read_text(encoding="utf-8")
         main_dart = (target / "lib/main.dart").read_text(encoding="utf-8")
         self.assertIn("name: helloworld_project", pubspec)
-        self.assertIn("flutter_foundation_kit: ^0.0.2", pubspec)
+        self.assertIn("flutter_foundation_kit: ^0.9.0", pubspec)
         self.assertNotIn("path: ../", pubspec)
         self.assertIn("package:helloworld_project/App.dart", main_dart)
         self.assertIn(
@@ -233,7 +233,7 @@ class CreateExampleProjectTests(unittest.TestCase):
             template_dir=self.template_dir,
             output_root=self.output_root,
             app_id="com.company.helloworld",
-            foundation_version="0.0.2",
+            foundation_version="1.2.3",
         )
 
         generated = self.output_root / "helloworldProject"

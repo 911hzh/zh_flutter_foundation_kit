@@ -22,17 +22,23 @@ class SettingsDemoPage extends StatelessWidget {
                 const Text('点击 Start 后通过 SettingsLoader 加载配置。'),
                 const SizedBox(height: 12),
                 FilledButton.icon(
-                  onPressed: state.isLoading ? null : () => context.read<SettingsDemoCubit>().load(),
+                  onPressed: state.isLoading
+                      ? null
+                      : () => context.read<SettingsDemoCubit>().load(),
                   icon: const Icon(Icons.play_arrow),
                   label: const Text('Start'),
                 ),
                 const SizedBox(height: 12),
-                if (state.isLoading) const Center(child: CircularProgressIndicator()),
+                if (state.isLoading)
+                  const Center(child: CircularProgressIndicator()),
                 if (state.error != null) Text(state.error.toString()),
                 if (!state.hasStarted) const Text('结果会在这里展示。'),
                 if (settings != null) ...[
                   _InfoTile(label: 'packageName', value: settings.packageName),
-                  _InfoTile(label: 'environment', value: settings.environment.name),
+                  _InfoTile(
+                    label: 'environment',
+                    value: settings.environment.name,
+                  ),
                   _InfoTile(label: 'baseUrl', value: settings.baseUrl),
                 ],
               ],

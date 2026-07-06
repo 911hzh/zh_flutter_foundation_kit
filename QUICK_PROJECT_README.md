@@ -15,7 +15,7 @@ make create helloworldProject
 - 输出目录：`../helloworldProject`
 - Dart package name：`helloworld_project`
 - app id：`com.example.helloworldproject`
-- 基础库依赖：`flutter_foundation_kit: ^0.0.2`
+- 基础库依赖：`flutter_foundation_kit: ^0.9.0`
 
 也可以指定 app id 和输出父目录：
 
@@ -59,7 +59,7 @@ lib/
 新项目默认依赖：
 
 ```yaml
-flutter_foundation_kit: ^0.0.2
+flutter_foundation_kit: ^0.9.0
 ```
 
 项目代码可以直接使用基础库提供的网络、日志、Settings、Store、Repository、持久化和工具能力。
