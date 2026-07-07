@@ -1,6 +1,6 @@
 import 'package:example/App.dart';
-import 'package:example/getIt/Injection.dart';
-import 'package:example/route/RouteConfig.dart';
+import 'package:example/module/getIt/Injection.dart';
+import 'package:example/module/route/RouteConfig.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -24,7 +24,7 @@ void main() {
     WidgetTester tester,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(routes: RouteConfig.routes, initialRoute: '/home'),
+      MaterialApp.router(routerConfig: RouteConfig.getRouter('/home')),
     );
 
     expect(find.text('Foundation Kit Demo'), findsOneWidget);

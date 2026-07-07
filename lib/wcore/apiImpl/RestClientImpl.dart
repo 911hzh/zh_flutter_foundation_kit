@@ -9,7 +9,8 @@ class RestClientImpl extends RestClientBase {
     required RestClientAdapter restAdapter,
     required NetworkProxy networkProxy,
     List<Interceptor> interceptors = const [],
-    IOHttpClientAdapter Function(NetworkProxy networkProxy)? createHttpClientAdapter,
+    IOHttpClientAdapter Function(NetworkProxy networkProxy)?
+    createHttpClientAdapter,
   }) : super(Dio()) {
     dio.options.baseUrl = restAdapter.getBaseUrl();
     dio.interceptors.add(

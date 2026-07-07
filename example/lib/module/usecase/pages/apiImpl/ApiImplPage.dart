@@ -1,5 +1,5 @@
 import 'package:example/base/api/UserApi.dart';
-import 'package:example/getIt/Injection.dart';
+import 'package:example/module/getIt/Injection.dart';
 import 'package:example/module/usecase/pages/apiImpl/ApiImplCubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,13 +27,20 @@ class _ApiImplPageState extends State<ApiImplPage> {
                   const Text('点击 Start 后通过 RestClient 请求远程接口。'),
                   const SizedBox(height: 12),
                   FilledButton.icon(
-                    onPressed: state.isLoading ? null : () => context.read<ApiImplCubit>().fetchTodo(),
+                    onPressed: state.isLoading
+                        ? null
+                        : () => context.read<ApiImplCubit>().fetchTodo(),
                     icon: const Icon(Icons.play_arrow),
                     label: const Text('Start'),
                   ),
                   const SizedBox(height: 12),
-                  if (state.isLoading) const Center(child: CircularProgressIndicator()),
-                  if (state.error != null) _DemoCard(title: '请求失败', children: [Text(state.error.toString())]),
+                  if (state.isLoading)
+                    const Center(child: CircularProgressIndicator()),
+                  if (state.error != null)
+                    _DemoCard(
+                      title: '请求失败',
+                      children: [Text(state.error.toString())],
+                    ),
                   if (state.user != null)
                     _DemoCard(
                       title: 'GET /todos/1',
@@ -41,7 +48,10 @@ class _ApiImplPageState extends State<ApiImplPage> {
                         _InfoRow(label: 'id', value: state.user!.id.toString()),
                         _InfoRow(label: 'userId', value: state.user!.userId),
                         _InfoRow(label: 'title', value: state.user!.title),
-                        _InfoRow(label: 'completed', value: '${state.user!.completed}'),
+                        _InfoRow(
+                          label: 'completed',
+                          value: '${state.user!.completed}',
+                        ),
                       ],
                     ),
                   if (!state.hasStarted) const Text('结果会在这里展示。'),
@@ -95,7 +105,10 @@ class _InfoRow extends StatelessWidget {
         children: [
           SizedBox(
             width: 88,
-            child: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+            child: Text(
+              label,
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
           ),
           Expanded(child: Text(value)),
         ],

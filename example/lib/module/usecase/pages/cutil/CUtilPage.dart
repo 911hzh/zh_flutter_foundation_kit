@@ -25,10 +25,19 @@ class CUtilPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 if (state.hasStarted) ...[
-                  _DemoTile(title: 'JsonUtil.pretty()', value: state.prettyJson),
+                  _DemoTile(
+                    title: 'JsonUtil.pretty()',
+                    value: state.prettyJson,
+                  ),
                   _DemoTile(title: 'Lazyload.get()', value: state.lazyValue),
-                  _DemoTile(title: 'Runtime generated id', value: '${state.generatedId}'),
-                  _DemoTile(title: 'Polling callback', value: state.pollingValues.join(', ')),
+                  _DemoTile(
+                    title: 'Runtime generated id',
+                    value: '${state.generatedId}',
+                  ),
+                  _DemoTile(
+                    title: 'Polling callback',
+                    value: state.pollingValues.join(', '),
+                  ),
                 ],
               ],
             );
@@ -48,7 +57,10 @@ class _DemoTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: ListTile(title: Text(title), subtitle: Text(value.isEmpty ? 'loading...' : value)),
+      child: ListTile(
+        title: Text(title),
+        subtitle: Text(value.isEmpty ? 'loading...' : value),
+      ),
     );
   }
 }

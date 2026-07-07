@@ -18,15 +18,20 @@ class UserStoreDemoPage extends StatelessWidget {
             return ListView(
               padding: const EdgeInsets.all(16),
               children: [
-                const Text('点击 Start 后，UserStore 会从 AuthStore 获取 userId，并按 userId 读取/缓存用户资料。'),
+                const Text(
+                  '点击 Start 后，UserStore 会从 AuthStore 获取 userId，并按 userId 读取/缓存用户资料。',
+                ),
                 const SizedBox(height: 12),
                 FilledButton.icon(
-                  onPressed: state.isLoading ? null : () => context.read<UserStoreDemoCubit>().start(),
+                  onPressed: state.isLoading
+                      ? null
+                      : () => context.read<UserStoreDemoCubit>().start(),
                   icon: const Icon(Icons.play_arrow),
                   label: const Text('Start'),
                 ),
                 const SizedBox(height: 12),
-                if (state.isLoading) const Center(child: CircularProgressIndicator()),
+                if (state.isLoading)
+                  const Center(child: CircularProgressIndicator()),
                 if (state.error != null) Text(state.error.toString()),
                 if (!state.hasStarted) const Text('结果会在这里展示。'),
                 if (state.userState != null)
