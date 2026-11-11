@@ -1,0 +1,176 @@
+name: Release from main
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Stable version such as 1.0.0. Leave blank to bump the patch version."
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-from-main-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  FLUTTER_VERSION: "3.41.9"
+
+jobs:
+  prepare:
+    name: Prepare version or dispatch publishing
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: write
+      pull-requests: write
+
+    steps:
+      - name: Check out selected main commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Select release version
+        id: version
+        env:
+          REQUESTED_VERSION: ${{ inputs.version }}
+        run: python3 -B tool/prepare_release.py
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Get package dependencies
+        run: flutter pub get
+
+      - name: Refresh example lockfile
+        if: steps.version.outputs.needs_pr == 'true'
+        working-directory: example
+        run: flutter pub get
+
+      - name: Check format, analyze, and test package
+        run: make ci
+
+      - name: Test project generator
+        run: python3 -B -m unittest tool/test_create_example_project.py
+
+      - name: Validate package publication
+        run: flutter pub publish --dry-run
+
+      - name: Open version update pull request
+        if: steps.version.outputs.needs_pr == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          title="Prepare release v$RELEASE_VERSION"
+          existing=$(gh pr list --base main --state open --limit 100 --json title,url \
+            --jq ".[] | select(.title == \"$title\") | .url")
+          if [[ -n "$existing" ]]; then
+            echo "Merge the existing version PR before publishing: $existing" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          branch="zh/$(TZ=Asia/Shanghai date +%m%d)-main-release_${RELEASE_VERSION//./_}_${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}"
+          git switch -c "$branch"
+          git add pubspec.yaml example/pubspec.lock CHANGELOG.md FOUNDATION_KIT_DETAIL.md \
+            QUICK_PROJECT_README.md example/FEATURE_LOG.md tool/create_example_project.py \
+            tool/test_create_example_project.py
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m "$title" \
+            -m "Synchronize the package, template, and changelog for pub.dev publishing." \
+            -m "Verified with make ci, the generator tests, and flutter pub publish --dry-run. Package APIs, generator logic, and example UI are unchanged."
+          git push origin "HEAD:refs/heads/$branch"
+          compare="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/compare/main...$branch?expand=1"
+          if ! pr=$(gh pr create --base main --head "$branch" --title "$title" \
+            --body "Synchronizes package and template versions for pub.dev. Verified with make ci, generator tests, and flutter pub publish --dry-run. Review the changelog before merging."); then
+            echo "Open the version PR manually: $compare" >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo "Review and merge the version PR, then run Release from main again: $pr" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Create version tag and dispatch publishing
+        if: steps.version.outputs.needs_pr == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          version="$RELEASE_VERSION"
+          status=$(curl --silent --show-error --max-time 30 --output /dev/null --write-out '%{http_code}' \
+            "https://pub.dev/api/packages/flutter_foundation_kit/versions/$version")
+          case "$status" in
+            200)
+              echo "::error::Version $version is already published on pub.dev."
+              exit 1
+              ;;
+            404) ;;
+            *)
+              echo "::error::Could not check pub.dev version availability (HTTP $status)."
+              exit 1
+              ;;
+          esac
+
+          tag="v$version"
+          if git show-ref --verify --quiet "refs/tags/$tag"; then
+            if [[ "$(git rev-list -n 1 "$tag")" != "$GITHUB_SHA" ]]; then
+              echo "::error::Tag $tag already points to a different commit. Bump the package version."
+              exit 1
+            fi
+          else
+            git tag "$tag" "$GITHUB_SHA"
+            git push origin "refs/tags/$tag"
+          fi
+          gh workflow run release.yml --ref "$tag"
+
+  publish:
+    name: Publish tagged package
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      id-token: write
+
+    steps:
+      - name: Check out version tag
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify tag version and main ancestry
+        run: |
+          version=$(sed -n 's/^version:[[:space:]]*\([^[:space:]#]*\).*/\1/p' pubspec.yaml)
+          if [[ "$GITHUB_REF_NAME" != "v$version" ]] ||
+             ! git merge-base --is-ancestor HEAD refs/remotes/origin/main; then
+            echo "::error::The tag must match pubspec.yaml and point to a commit on main."
+            exit 1
+          fi
+
+      - name: Set up Dart and pub.dev OIDC
+        uses: dart-lang/setup-dart@v1
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Publish to pub.dev
+        run: flutter pub publish --force
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" --generate-notes
