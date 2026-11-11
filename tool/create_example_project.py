@@ -7,7 +7,7 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-DEFAULT_FOUNDATION_VERSION = "0.0.2"
+DEFAULT_FOUNDATION_VERSION = "0.9.0"
 OLD_APP_ID = "com.example.example"
 
 TEXT_SUFFIXES = {

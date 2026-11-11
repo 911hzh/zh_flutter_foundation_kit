@@ -3,7 +3,12 @@ class User {
   final String userId;
   final String title;
   final bool completed;
-  User({required this.id, required this.userId, required this.title, required this.completed});
+  User({
+    required this.id,
+    required this.userId,
+    required this.title,
+    required this.completed,
+  });
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'] as int,

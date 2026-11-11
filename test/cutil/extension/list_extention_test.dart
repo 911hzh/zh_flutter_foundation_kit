@@ -49,7 +49,7 @@ void runListExtentionTests() {
       List<int> emptyList = [];
       print("emptyList: $emptyList");
       try {
-        final result1 = emptyList.reduce((value, item) => value + item);
+        emptyList.reduce((value, item) => value + item);
         print("emptyList: default reduce start");
         expect(true, isTrue);
       } catch (e) {

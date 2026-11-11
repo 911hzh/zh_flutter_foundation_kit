@@ -4,13 +4,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_foundation_kit/flutter_foundation_kit.dart';
 
 class LoggerState {
-  const LoggerState({this.hasStarted = false, this.messages = const [], this.logFilePath});
+  const LoggerState({
+    this.hasStarted = false,
+    this.messages = const [],
+    this.logFilePath,
+  });
 
   final bool hasStarted;
   final List<String> messages;
   final String? logFilePath;
 
-  LoggerState copyWith({bool? hasStarted, List<String>? messages, String? logFilePath}) {
+  LoggerState copyWith({
+    bool? hasStarted,
+    List<String>? messages,
+    String? logFilePath,
+  }) {
     return LoggerState(
       hasStarted: hasStarted ?? this.hasStarted,
       messages: messages ?? this.messages,
@@ -42,7 +50,13 @@ class LoggerCubit extends Cubit<LoggerState> {
   void configurePathLogOutput() {
     final logFilePath = '${Directory.systemTemp.path}/foundation-kit-demo.log';
     LoggerFactoryDefaultImpl.configure(
-      configs: [LoggerConfiguration.file(tag: 'pathFile', filePath: logFilePath, clearOutput: true)],
+      configs: [
+        LoggerConfiguration.file(
+          tag: 'pathFile',
+          filePath: logFilePath,
+          clearOutput: true,
+        ),
+      ],
     );
 
     final logger = LoggerFactory.current.getLogger(['pathFile']);
@@ -55,7 +69,8 @@ class LoggerCubit extends Cubit<LoggerState> {
         logFilePath: logFilePath,
         messages: [
           ...state.messages,
-          'LoggerFactoryDefaultImpl.configure(configs: [LoggerConfiguration.file(...)])',
+          'LoggerFactoryDefaultImpl.configure('
+              'configs: [LoggerConfiguration.file(...)])',
           "LoggerFactory.current.getLogger(['pathFile']).info(...)",
           '日志文件路径：$logFilePath',
         ],

@@ -90,7 +90,7 @@
 
 ### 备注
 
-生成项目默认使用 `flutter_foundation_kit: ^0.0.2`。如果该版本尚未发布到当前 pub 源，生成后的 `flutter pub get` 会因依赖不可解析失败。
+生成项目默认使用 `flutter_foundation_kit: ^0.9.0`。如果该版本尚未发布到当前 pub 源，生成后的 `flutter pub get` 会因依赖不可解析失败。
 
 ## 2026-06-15 示例目录归位与文档同步
 

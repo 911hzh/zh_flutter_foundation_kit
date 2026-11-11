@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:example/module/usecase/pages/home/HomePageVM.dart';
-import 'package:example/route/GlobalNavigatorKey.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -35,7 +35,10 @@ class HomePage extends StatelessWidget {
                     color: color,
                     borderRadius: BorderRadius.circular(16),
                     child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                       leading: CircleAvatar(
                         backgroundColor: Colors.white.withValues(alpha: 0.85),
                         foregroundColor: color,
@@ -43,11 +46,18 @@ class HomePage extends StatelessWidget {
                       ),
                       title: Text(
                         item['title'] ?? '',
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
                       ),
-                      trailing: const Icon(Icons.chevron_right, color: Colors.white),
+                      trailing: const Icon(
+                        Icons.chevron_right,
+                        color: Colors.white,
+                      ),
                       onTap: () {
-                        context.pushNamed(item['route'] ?? '');
+                        context.push(item['route'] ?? '');
                       },
                     ),
                   ),

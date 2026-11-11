@@ -1,7 +1,7 @@
 import 'package:example/base/api/AppApiClient.dart';
 import 'package:example/base/api/model/User.dart';
 import 'package:example/base/store/auth/AuthStoreImpl.dart';
-import 'package:example/getIt/GetItInstanceName.dart';
+import 'package:example/module/getIt/GetItInstanceName.dart';
 import 'package:flutter_foundation_kit/cutil/Lazyload.dart';
 import 'package:flutter_foundation_kit/wcore/Repository.dart';
 import 'package:flutter_foundation_kit/wcore/store/UserStore.dart';
@@ -29,7 +29,9 @@ class DemoUserState extends UserState {
     final userJson = json['user'];
     return DemoUserState(
       userId: json['userId'] as String? ?? '',
-      user: userJson is Map<String, dynamic> ? User.fromJson(userJson) : DemoUserState.empty().user,
+      user: userJson is Map<String, dynamic>
+          ? User.fromJson(userJson)
+          : DemoUserState.empty().user,
     );
   }
 }
@@ -43,7 +45,8 @@ class UserStoreImpl extends UserStore<DemoUserState> {
   UserStoreImpl({
     required this.apiClient,
     required this.authStore,
-    @Named(RepositoryGetItInstanceName.userPreference) required Repository preferenceRepositoryPort,
+    @Named(RepositoryGetItInstanceName.userPreference)
+    required Repository preferenceRepositoryPort,
   }) : _preferenceRepositoryPort = preferenceRepositoryPort,
        super(initialState: DemoUserState.empty()) {
     userLazyload = Lazyload<DemoUserState>(() async {
@@ -53,15 +56,22 @@ class UserStoreImpl extends UserStore<DemoUserState> {
         setState(emptyState);
         return emptyState;
       }
-      final cachedJson = await _preferenceRepositoryPort.getValue<String, Map<String, dynamic>>(await _cacheKey());
+      final cachedJson = await _preferenceRepositoryPort
+          .getValue<String, Map<String, dynamic>>(await _cacheKey());
       if (cachedJson != null) {
         final cachedState = DemoUserState.fromJson(cachedJson);
         setState(cachedState);
       }
 
       final response = await apiClient.userApi.fetchTodo();
-      final userState = DemoUserState(userId: authState.userId, user: response.data);
-      await _preferenceRepositoryPort.setValue<String, Map<String, dynamic>>(await _cacheKey(), userState.toJson());
+      final userState = DemoUserState(
+        userId: authState.userId,
+        user: response.data,
+      );
+      await _preferenceRepositoryPort.setValue<String, Map<String, dynamic>>(
+        await _cacheKey(),
+        userState.toJson(),
+      );
       setState(userState);
       return userState;
     });

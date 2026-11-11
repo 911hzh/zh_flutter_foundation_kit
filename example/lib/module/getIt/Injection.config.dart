@@ -48,12 +48,14 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i213.SettingsStore>(
       () => _i213.SettingsStore(settingsLoader: gh<_i248.SettingsLoader>()),
     );
+    gh.lazySingleton<_i798.AuthStoreImpl>(
+      () => _i798.AuthStoreImpl(
+        keychainPort: gh<_i38.Repository>(instanceName: 'authRepository'),
+      ),
+    );
     gh.lazySingleton<_i698.RestClientAdapter>(
       () =>
           _i1032.AppRestClientAdapter(settingsStore: gh<_i213.SettingsStore>()),
-    );
-    gh.lazySingleton<_i798.AuthStoreImpl>(
-      () => _i798.AuthStoreImpl(keychainPort: gh<_i38.Repository>()),
     );
     gh.lazySingleton<_i698.RestClient>(
       () => registerModule.restClient(
@@ -71,7 +73,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i154.UserStoreImpl(
         apiClient: gh<_i225.AppApiClient>(),
         authStore: gh<_i798.AuthStoreImpl>(),
-        preferenceRepositoryPort: gh<_i38.Repository>(),
+        preferenceRepositoryPort: gh<_i38.Repository>(
+          instanceName: 'userPreferenceRepository',
+        ),
       ),
     );
     return this;
