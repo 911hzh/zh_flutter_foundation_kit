@@ -1,0 +1,4 @@
+{
+  "baseUrl": "https://dev-api.example.com",
+  "instabugToken": "development-instabug-token"
+}

@@ -1,0 +1,5 @@
+# 默认所有文件变更都需要 911hzh 进行 Code Owner Review。
+* @911hzh
+
+# 保护 CODEOWNERS 自身，避免变更审核规则时绕过 owner。
+/.github/CODEOWNERS @911hzh
