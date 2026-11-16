@@ -4,9 +4,11 @@
 
 ## 当前内容
 
-- `ApiClient.dart`：聚合示例 API，并提供 demo 环境的 `RestClientAdapter`、`NetworkProxy` 实现。
-- `UserApi.dart`：演示如何通过 `RestClient` 发起请求并转换模型，同时包含 demo 登录返回结构。
-- `model/`：网络返回模型目录，例如 `User.dart`。
+- [AppApiClient.dart](AppApiClient.dart) 聚合示例 API，当前提供 `UserApi`。
+- [AppRestClientAdapter.dart](AppRestClientAdapter.dart) 从 `SettingsStore` 读取 base URL，并配置示例请求头。
+- [AppNetworkProxy.dart](AppNetworkProxy.dart) 提供示例网络代理配置。
+- [UserApi.dart](UserApi.dart) 演示如何通过 `RestClient` 发起请求并转换模型。
+- `model/` 保存返回模型，包括 [User.dart](model/User.dart) 和 [LoginResponse.dart](model/LoginResponse.dart)。
 
 ## 和 port 的区别
 

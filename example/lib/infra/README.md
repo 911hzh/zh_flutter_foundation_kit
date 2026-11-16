@@ -2,6 +2,8 @@
 
 `infra` 是基础设施实现层，用于放置 `lib/base/port` 中接口的具体实现。这里可以依赖第三方 SDK、平台通道、系统服务或远端服务，但对上层模块暴露时应通过 Port 接口完成。
 
+当前目录仅包含本说明，作为新增应用端口实现的预留位置。模板已有的安全存储和偏好存储实现来自 Foundation Kit，由 `module/getIt/RegisterModule.dart` 注册。
+
 ## 适合放置的内容
 
 - Analytics Port 的具体 SDK 实现。

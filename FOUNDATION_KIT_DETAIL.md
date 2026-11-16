@@ -75,7 +75,7 @@ dependencies:
 
 ```yaml
 dependencies:
-  flutter_foundation_kit: ^0.9.0
+  flutter_foundation_kit: ^0.9.1
 ```
 
 ### 2. 统一导入

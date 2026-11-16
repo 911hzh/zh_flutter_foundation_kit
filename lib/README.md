@@ -144,14 +144,6 @@ Store 状态管理基类。基于 `ValueNotifier` 提供轻量状态容器能力
 
 基于 `shared_preferences` 的偏好设置实现。支持 String、int、bool、double、List<String>、Map、List 和 `Codable` 类型。
 
-## `port`
-
-`port` 是历史端口目录，当前包含 `KeychainPort.dart`。后续建议统一使用 `cport` 存放基础能力端口，避免端口目录分散。
-
-### `port/KeychainPort.dart`
-
-Keychain 端口相关文件。与 `cport/KeychainPort.dart` 职责相近，后续可以视兼容性逐步收敛。
-
 ## `cutil`
 
 `cutil` 放通用工具类和扩展，要求尽量无业务依赖。
@@ -180,7 +172,7 @@ JSON 工具类。支持 stringify、parse、parseList、pretty、clone，以及 
 
 简单递增 ID 生成器。
 
-### `cutil/ListExtention.dart`
+### `cutil/extension/ListExtention.dart`
 
 List 相关扩展能力。
 
