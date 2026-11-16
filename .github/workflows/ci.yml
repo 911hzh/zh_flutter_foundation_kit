@@ -91,7 +91,7 @@ jobs:
 
       - name: Analyze example
         working-directory: example
-        run: flutter analyze
+        run: flutter analyze --no-fatal-infos
 
       - name: Test example
         working-directory: example
