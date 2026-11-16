@@ -5,6 +5,7 @@
 - 同步基础库与 example 的目录说明、网络 API 路径及启动流程。
 - 补充结构变更时同步更新相关 Markdown 文档的仓库规则。
 - 将模板生成器默认依赖更新为 `flutter_foundation_kit: ^0.9.1`。
+- 将 GitHub Actions CI 的 Flutter SDK 固定为 `3.41.9`，与发布流程一致。
 
 ## 0.9.0
 
