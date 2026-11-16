@@ -6,7 +6,7 @@
 
 - `Injection.dart`：GetIt 实例和依赖初始化入口。
 - `Injection.config.dart`：`injectable` 生成的依赖注册代码。
-- `RegisterModule.dart`：手写依赖注册，例如 `RestClient`、Repository、网络代理和证书配置。
+- `RegisterModule.dart`：手写注册 `RestClient` 和 Repository，并为 HTTP 客户端装配代理与证书配置。应用网络适配器和代理实现定义在 `base/api/`，通过 `injectable` 注解注册。
 - `GetItInstanceName.dart`：命名实例的名称定义。
 
 ## 使用约定

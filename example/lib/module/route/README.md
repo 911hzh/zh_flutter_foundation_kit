@@ -4,8 +4,8 @@
 
 ## 当前内容
 
-- `RouteConfig.dart`：集中维护路由路径和页面 WidgetBuilder 的映射。
-- `GlobalNavigatorKey.dart`：提供全局导航 key 和辅助导航能力。
+- [RouteConfig.dart](RouteConfig.dart) 根据初始路径创建 `GoRouter`，并通过 `GoRoute` 注册各示例页面。
+- [GlobalNavigatorKey.dart](GlobalNavigatorKey.dart) 定义 `globalNavigatorKey`，当前由 `App.dart` 传给 `MaterialApp.router` 的 `key`。
 
 ## 使用约定
 
