@@ -9,6 +9,9 @@ on:
   # 在创建或更新 Pull Request 时触发 CI。
   pull_request:
 
+env:
+  FLUTTER_VERSION: "3.41.9"
+
 jobs:
   prepare:
     name: Prepare and Analyze
@@ -24,6 +27,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
@@ -55,6 +59,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
@@ -81,6 +86,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: stable
           cache: true
 
@@ -91,7 +97,7 @@ jobs:
 
       - name: Analyze example
         working-directory: example
-        run: flutter analyze --no-fatal-infos
+        run: flutter analyze
 
       - name: Test example
         working-directory: example
