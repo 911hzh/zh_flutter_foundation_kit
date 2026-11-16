@@ -31,9 +31,9 @@ make create helloworldProject BUNDLE_ID=com.company.helloworld OUTPUT=../apps
 - `lib/module/usecase`：页面、Cubit、VM、模块内 Widget。
 - `lib/module/getIt`：依赖注入和对象注册。
 - `lib/module/route`：路由表和全局导航能力。
-- `lib/base/port`：第三方 SDK 或平台能力的接口抽象。
-- `lib/infra`：`base/port` 中接口的具体实现。
-- `lib/e_uikit`：多个模块共享的 UI 组件。
+- `lib/base/port`：预留给第三方 SDK 或平台能力的接口抽象。
+- `lib/infra`：预留给 `base/port` 中接口的具体实现。
+- `lib/e_uikit`：预留给多个模块共享的 UI 组件。
 - `lib/base/api`：示例网络 API 封装。
 - `lib/base/store`：共享状态、本地持久化和 Store 示例。
 

@@ -5,10 +5,10 @@
 ## 当前内容
 
 - `usecase/pages/home`：demo 首页和入口列表。
-- `usecase/pages/login`、`logout`：登录和退出登录示例。
+- `usecase/pages/login`、`usecase/pages/logout`：登录和退出登录示例。
 - `usecase/pages/apiImpl`：REST Client 调用示例。
-- `usecase/pages/store`、`userStore`、`settings`：Store 和设置能力示例。
-- `usecase/pages/logger`、`cutil`：日志和工具能力示例。
+- `usecase/pages/store`、`usecase/pages/userStore`、`usecase/pages/settings`：Store 和设置能力示例。
+- `usecase/pages/logger`、`usecase/pages/cutil`：日志和工具能力示例。
 - `getIt`：依赖注入和对象注册。
 - `route`：页面路由表和全局导航能力。
 
